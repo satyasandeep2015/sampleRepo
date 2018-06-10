@@ -1,0 +1,24 @@
+ public async Task<List<UserNavigation>> Test()
+        {
+            MobileAPIAccess mobileAPIAccess = new MobileAPIAccess();
+
+            var localLoginData = await mobileAPIAccess.Login("mobile3.test", "security1");
+
+            NavigationAPIAccess navigationAPIAccess = new NavigationAPIAccess();
+
+            var siteSytemServices = await navigationAPIAccess.GetSiteSystemServices(localLoginData.SessionID, localLoginData.SessionKey);
+
+             var userNavigation = await navigationAPIAccess.GetUserNav(localLoginData.SessionID, localLoginData.SessionKey);
+
+            menuList = userNavigation.ToList();
+            sID = localLoginData.SessionID;
+            sKEY = localLoginData.SessionKey;
+            localSiteSystemServices = siteSytemServices;
+
+            var userAPIAccess = new UserAPIAccess();
+            localUser = await userAPIAccess.GetUser(localSiteSystemServices.Home.ServiceId, sID, sKEY);
+
+
+            return userNavigation.ToList();
+
+        }
